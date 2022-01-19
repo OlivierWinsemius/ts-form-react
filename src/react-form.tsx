@@ -3,6 +3,7 @@ import { FormValues } from "ts-form/build/types";
 
 export class ReactForm<V extends FormValues> extends Form<V> {
   _fieldNames = this.fieldNames;
+  _getField = this.getField;
 
   _setAfterValidateField = (
     afterValidateField: (field: keyof V, form: this) => void
@@ -18,16 +19,7 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     this.afterValidateForm = afterValidateForm;
   };
 
-  _getField = this.getField;
   _setGetField = (getField: Form<V>["getField"]) => {
     this.getField = getField;
   };
 }
-
-export type HiddenFormMethods =
-  | "_fieldNames"
-  | "_setAfterValidateField"
-  | "_setAfterSubmit"
-  | "_setAfterValidateForm"
-  | "_setGetField"
-  | "_getField";

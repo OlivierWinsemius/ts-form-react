@@ -1,6 +1,7 @@
 import React, { Context } from "react";
+import { Form } from "ts-form";
 import { FormProperties, FormValues } from "ts-form/build/types";
-import { HiddenFormMethods, ReactForm } from "./react-form";
+import { ReactForm } from "./react-form";
 import { ReactFormProvider } from "./react-form-provider";
 
 export const createForm = <
@@ -14,8 +15,7 @@ export const createForm = <
 
   const FormContext = React.createContext(form) as C;
 
-  const useForm = () =>
-    React.useContext(FormContext) as Omit<F, HiddenFormMethods>;
+  const useForm = () => React.useContext(FormContext) as unknown as Form<V>;
 
   const FormProvider: React.FC = ({ children }) => (
     <ReactFormProvider<V, F> Context={FormContext} form={form}>

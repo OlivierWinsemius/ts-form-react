@@ -1,4 +1,10 @@
-import React, { Context, useEffect, useMemo, useState } from "react";
+import React, {
+  Context,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FormValues } from "ts-form/build/types";
 import { ReactForm } from "./react-form";
 
@@ -13,7 +19,7 @@ const listeners: Record<string, () => void> = {};
 const getField =
   <V extends FormValues>(id: number, form: ReactForm<V>) =>
   <F extends keyof V>(field: F) => {
-    const [update, setUpdate] = useState(0);
+    const [update, setUpdate] = useState(id);
     listeners[`getField_${field}_${id}`] = () => setUpdate(update + 1);
     return useMemo(() => form._getField(field), [update]);
   };
@@ -29,16 +35,18 @@ export const ReactFormProvider = <
   children,
 }: Props<V, F>) => {
   const [isReady, setIsReady] = useState(false);
-  const [isValid, setIsValid] = useState(!form.isValid);
   const [isSubmitting, setIsSubmitting] = useState(!!form.isSubmitting);
+  const [isTouched, setIsTouched] = useState(!!form.isTouched);
+  const [isValid, setIsValid] = useState(!form.isValid);
+
+  const updateBooleans = useCallback((f: F) => {
+    setIsSubmitting(f.isSubmitting);
+    setIsTouched(f.isTouched);
+    setIsValid(f.isValid);
+  }, []);
 
   useEffect(() => {
     const uniqueId = ++id;
-
-    const updateBooleans = (f: F) => {
-      setIsSubmitting(f.isSubmitting);
-      setIsValid(f.isValid);
-    };
 
     form._setAfterSubmit(updateBooleans);
 
@@ -52,14 +60,14 @@ export const ReactFormProvider = <
     });
 
     setIsReady(true);
-  }, [form]);
+  }, [form, updateBooleans]);
 
   if (!isReady) {
     return null;
   }
 
   return (
-    <Context.Provider value={{ ...form, isValid, isSubmitting }}>
+    <Context.Provider value={{ ...form, isValid, isSubmitting, isTouched }}>
       {children}
     </Context.Provider>
   );
