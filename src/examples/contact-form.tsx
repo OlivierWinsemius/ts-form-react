@@ -1,9 +1,9 @@
 import React from "react";
 import { createForm } from "../create-form";
 import { FormButtons } from "./form-buttons";
-import { TextAreaInput, TextInput } from "./form-input";
+import { TextInput } from "./form-input";
 
-const { useForm, FormProvider } = createForm({
+const { useForm, useField, FormProvider } = createForm({
   values: { name: "", email: "", message: "" },
   onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1000)),
   validators: {
@@ -13,17 +13,14 @@ const { useForm, FormProvider } = createForm({
   },
 });
 
-const ContactForm = () => {
-  const { getField } = useForm();
-  return (
-    <form>
-      <TextInput label="name" {...getField("name")} />
-      <TextInput label="email" {...getField("email")} />
-      <TextAreaInput label="message" {...getField("message")} />
-      <FormButtons useForm={useForm} />
-    </form>
-  );
-};
+const ContactForm = () => (
+  <form>
+    <TextInput fieldName="name" useField={useField} />
+    <TextInput fieldName="email" useField={useField} />
+    <TextInput fieldName="message" useField={useField} />
+    <FormButtons useForm={useForm} />
+  </form>
+);
 
 export const ContactFormExample = () => (
   <FormProvider>

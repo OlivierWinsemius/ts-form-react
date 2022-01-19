@@ -17,11 +17,14 @@ export const createForm = <
 
   const useForm = () => React.useContext(FormContext) as unknown as Form<V>;
 
+  const useField = (field: keyof V) =>
+    React.useContext(FormContext).getField(field);
+
   const FormProvider: React.FC = ({ children }) => (
     <ReactFormProvider<V, F> Context={FormContext} form={form}>
       {children}
     </ReactFormProvider>
   );
 
-  return { useForm, FormProvider };
+  return { useForm, useField, FormProvider };
 };

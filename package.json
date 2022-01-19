@@ -1,5 +1,6 @@
 {
-  "name": "test-ts-form",
+  "name": "ts-form-react",
+  "description": "React wrapper for ts-form",
   "version": "1.0.0",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -7,6 +8,17 @@
     "build"
   ],
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/OlivierWinsemius/ts-form-react.git",
+    "type": "git"
+  },
+  "author": "Olivier Winsemius <mail@olivierwinsemius.com>",
+  "keywords": [
+    "typescript",
+    "form",
+    "simple",
+    "react"
+  ],
   "dependencies": {
     "react": "^17.0.2",
     "ts-form": "https://github.com/OlivierWinsemius/ts-form.git"

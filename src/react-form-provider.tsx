@@ -67,7 +67,7 @@ export const ReactFormProvider = <
   }
 
   return (
-    <Context.Provider value={{ ...form, isValid, isSubmitting, isTouched }}>
+    <Context.Provider value={{ ...form, isSubmitting, isTouched, isValid }}>
       {children}
     </Context.Provider>
   );
