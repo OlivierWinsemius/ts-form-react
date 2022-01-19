@@ -5,6 +5,7 @@ esbuild.serve(
   {
     bundle: true,
     platform: "browser",
+    sourcemap: "inline",
     entryPoints: ["./src/examples/index.tsx"],
   }
 );

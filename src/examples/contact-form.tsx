@@ -3,55 +3,90 @@ import { createForm } from "../create-form";
 
 const form = createForm({
   values: { name: "", email: "", message: "" },
-  onSubmit: (values) => console.log("submitting values", values),
+
+  onSubmit: (_, f) =>
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(f.reset),
+
   validators: {
-    name: (v) => v.string(),
-    email: (v) => v.string(),
-    message: (v) => v.string(),
+    name: (v) => v.string().truthy(),
+    email: (v) => v.string().truthy(),
+    message: (v) => v.string().truthy(),
   },
 });
 
 const { useForm, FormProvider } = form;
 
-const ContactForm = () => {
-  const form = useForm();
-  const { getField, isValid, submit } = form;
+const FormButtons = () => {
+  const { submit, reset, isSubmitting, isValid } = useForm();
 
-  const nameField = getField("name");
-  const emailField = getField("email");
-  const messageField = getField("message");
+  if (isSubmitting) {
+    return <span>submitting...</span>;
+  }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        submit();
-      }}
-    >
+    <>
+      <button onClick={submit} type="submit" disabled={!isValid}>
+        submit
+      </button>
+      <button onClick={reset} type="reset">
+        reset
+      </button>
+    </>
+  );
+};
+
+const Name = () => {
+  const field = useForm().getField("name");
+
+  return (
+    <>
       <label htmlFor="name">name:</label>
       <input
         id="name"
-        value={nameField.value}
-        onChange={(e) => nameField.setValue(e.target.value)}
+        value={field.value}
+        onChange={(e) => field.setValue(e.target.value)}
       />
+    </>
+  );
+};
 
+const Email = () => {
+  const field = useForm().getField("email");
+
+  return (
+    <>
       <label htmlFor="email">email:</label>
       <input
         id="email"
-        value={emailField.value}
-        onChange={(e) => emailField.setValue(e.target.value)}
+        value={field.value}
+        onChange={(e) => field.setValue(e.target.value)}
       />
+    </>
+  );
+};
 
+const Message = () => {
+  const field = useForm().getField("message");
+
+  return (
+    <>
       <label htmlFor="message">message:</label>
       <textarea
         id="message"
-        value={messageField.value}
-        onChange={(e) => messageField.setValue(e.target.value)}
+        value={field.value}
+        onChange={(e) => field.setValue(e.target.value)}
       />
+    </>
+  );
+};
 
-      <button type="submit" disabled={!isValid}>
-        submit
-      </button>
+const ContactForm = () => {
+  return (
+    <form>
+      <Name />
+      <Email />
+      <Message />
+      <FormButtons />
     </form>
   );
 };
