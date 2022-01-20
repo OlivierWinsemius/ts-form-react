@@ -15,21 +15,35 @@
       input,
       textarea {
         background-color: #f0f0f0;
-        padding: 5px;
+        padding: 5px 10px;
         border: none;
         outline: none;
         border-radius: 10px;
         resize: none;
+        font-family: initial;
+        margin-top: -5px;
+      }
+
+      input {
+        border-radius: 999px;
+      }
+
+      textarea {
+        height: 100px;
       }
 
       input[aria-invalid="true"],
       textarea[aria-invalid="true"] {
-        background-color: #d8d8d8;
+        background-color: #e4d1d1;
       }
 
       input:focus,
       textarea:focus {
         background-color: #f0f0f0;
+      }
+
+      fieldset {
+        box-shadow: 8px 6px 0px rgba(0, 0, 0, 0.1);
       }
 
       fieldset,
@@ -48,10 +62,42 @@
         border: none;
         outline: none;
         color: #ffffff;
+        cursor: pointer;
+        text-transform: uppercase;
+        padding: 5px;
+      }
+
+      legend {
+        font-family: sans-serif;
+        text-transform: uppercase;
+        margin: 0 auto;
+        font-size: 0.8rem;
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+      }
+
+      form[aria-disabled="true"] {
+        opacity: 0.6;
+        user-select: none;
+        pointer-events: none;
+      }
+
+      label {
+        font-family: sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        font-size: 0.8rem;
+        color: #6b6b6b;
+      }
+
+      button,
+      legend {
+        letter-spacing: 0.1rem;
+        font-weight: 600;
       }
 
       button:disabled {
         opacity: 0.6;
+        cursor: auto;
       }
 
       button[type="submit"] {

@@ -10,7 +10,7 @@ export const TextInput = <F extends string>({
   fieldName,
   useField,
 }: Props<F, string>) => {
-  const { value, setValue, isValid } = useField(fieldName);
+  const { value, setValue, isValid, isTouched } = useField(fieldName);
 
   return (
     <input
@@ -18,7 +18,7 @@ export const TextInput = <F extends string>({
       type="text"
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      aria-invalid={!isValid}
+      aria-invalid={isTouched && !isValid}
     />
   );
 };
@@ -27,14 +27,14 @@ export const TextAreaInput = <F extends string>({
   fieldName,
   useField,
 }: Props<F, string>) => {
-  const { value, setValue, isValid } = useField(fieldName);
+  const { value, setValue, isValid, isTouched } = useField(fieldName);
 
   return (
     <textarea
       id={fieldName}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      aria-invalid={!isValid}
+      aria-invalid={isTouched && !isValid}
     />
   );
 };
@@ -43,7 +43,7 @@ export const NumberInput = <F extends string>({
   fieldName,
   useField,
 }: Props<F, number>) => {
-  const { value, setValue, isValid } = useField(fieldName);
+  const { value, setValue, isValid, isTouched } = useField(fieldName);
 
   return (
     <input
@@ -51,7 +51,7 @@ export const NumberInput = <F extends string>({
       type={"number"}
       value={value}
       onChange={(e) => setValue(Number(e.target.value))}
-      aria-invalid={!isValid}
+      aria-invalid={isTouched && !isValid}
     />
   );
 };

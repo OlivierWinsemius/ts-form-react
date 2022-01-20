@@ -18,6 +18,7 @@ const { useForm, useField, FormProvider, form } = createForm({
 
 const LoginForm = () => (
   <form
+    aria-disabled={useForm().isSubmitting}
     onReset={form.reset}
     onSubmit={(e) => {
       e.preventDefault();
@@ -28,7 +29,7 @@ const LoginForm = () => (
       <legend>login form</legend>
       <label htmlFor="name">name:</label>
       <TextInput fieldName="name" useField={useField} />
-      <label htmlFor="name">password:</label>
+      <label htmlFor="password">password:</label>
       <TextInput fieldName="password" useField={useField} />
       <FormButtons useForm={useForm} />
     </fieldset>

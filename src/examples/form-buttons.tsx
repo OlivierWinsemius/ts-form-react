@@ -6,17 +6,25 @@ interface Props<V extends FormValues> {
   useForm: () => Form<V>;
 }
 
+const SubmitButton = ({ isDisabled }: { isDisabled: boolean }) => (
+  <button type="submit" disabled={isDisabled}>
+    submit
+  </button>
+);
+
+const ResetButton = ({ isDisabled }: { isDisabled: boolean }) => (
+  <button type="reset" disabled={isDisabled}>
+    reset
+  </button>
+);
+
 export const FormButtons = <V extends FormValues>({ useForm }: Props<V>) => {
-  const { isSubmitting, isValid, isTouched } = useForm();
+  const { isTouched, isValid } = useForm();
 
   return (
     <div className="formButtons">
-      <button type="submit" disabled={!isValid || isSubmitting}>
-        {isSubmitting ? "submitting..." : "submit"}
-      </button>
-      <button type="reset" disabled={!isTouched || isSubmitting}>
-        reset
-      </button>
+      <SubmitButton isDisabled={!isValid} />
+      <ResetButton isDisabled={!isTouched} />
     </div>
   );
 };

@@ -19,6 +19,7 @@ const { useForm, useField, FormProvider, form } = createForm({
 
 const ContactForm = () => (
   <form
+    aria-disabled={useForm().isSubmitting}
     onReset={form.reset}
     onSubmit={(e) => {
       e.preventDefault();
