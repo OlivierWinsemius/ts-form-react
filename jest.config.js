@@ -5,4 +5,5 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ["src/*.{ts,tsx}"],
   coveragePathIgnorePatterns: ["index.ts"],
+  testEnvironment: "jsdom",
 };

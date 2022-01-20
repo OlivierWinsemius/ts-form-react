@@ -1,10 +1,4 @@
-import React, {
-  Context,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Context, useEffect, useMemo, useState } from "react";
 import { FormValues } from "ts-form/build/types";
 import { ReactForm } from "./react-form";
 
@@ -39,13 +33,17 @@ export const ReactFormProvider = <
   const [isTouched, setIsTouched] = useState(!!form.isTouched);
   const [isValid, setIsValid] = useState(!form.isValid);
 
-  const updateBooleans = useCallback((f: F) => {
-    setIsSubmitting(f.isSubmitting);
-    setIsTouched(f.isTouched);
-    setIsValid(f.isValid);
-  }, []);
-
   useEffect(() => {
+    let mounted = true;
+
+    const updateBooleans = (f: F) => {
+      if (mounted) {
+        setIsSubmitting(f.isSubmitting);
+        setIsTouched(f.isTouched);
+        setIsValid(f.isValid);
+      }
+    };
+
     const uniqueId = ++id;
 
     form._setGetField(getField(uniqueId, form));
@@ -55,12 +53,16 @@ export const ReactFormProvider = <
     form._setAfterValidateForm(updateBooleans);
 
     form._setAfterValidateField((field, f) => {
-      listeners[`getField_${field}_${uniqueId}`]?.();
+      listeners[`getField_${field}_${uniqueId}`]();
       updateBooleans(f);
     });
 
     setIsReady(true);
-  }, [form, updateBooleans]);
+
+    return () => {
+      mounted = false;
+    };
+  }, [form]);
 
   if (!isReady) {
     return null;
