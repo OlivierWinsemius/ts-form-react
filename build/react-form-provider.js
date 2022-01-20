@@ -33,23 +33,28 @@ const ReactFormProvider = ({ form, Context, children, }) => {
     const [isSubmitting, setIsSubmitting] = (0, react_1.useState)(!!form.isSubmitting);
     const [isTouched, setIsTouched] = (0, react_1.useState)(!!form.isTouched);
     const [isValid, setIsValid] = (0, react_1.useState)(!form.isValid);
-    const updateBooleans = (0, react_1.useCallback)((f) => {
-        setIsSubmitting(f.isSubmitting);
-        setIsTouched(f.isTouched);
-        setIsValid(f.isValid);
-    }, []);
     (0, react_1.useEffect)(() => {
+        let mounted = true;
+        const updateBooleans = (f) => {
+            if (mounted) {
+                setIsSubmitting(f.isSubmitting);
+                setIsTouched(f.isTouched);
+                setIsValid(f.isValid);
+            }
+        };
         const uniqueId = ++id;
         form._setGetField(getField(uniqueId, form));
         form._setAfterSubmit(updateBooleans);
         form._setAfterValidateForm(updateBooleans);
         form._setAfterValidateField((field, f) => {
-            var _a;
-            (_a = listeners[`getField_${field}_${uniqueId}`]) === null || _a === void 0 ? void 0 : _a.call(listeners);
+            listeners[`getField_${field}_${uniqueId}`]();
             updateBooleans(f);
         });
         setIsReady(true);
-    }, [form, updateBooleans]);
+        return () => {
+            mounted = false;
+        };
+    }, [form]);
     if (!isReady) {
         return null;
     }
