@@ -55,34 +55,36 @@ describe("createForm", () => {
     );
 
     const formElement = await screen.findByTestId("form");
-    const textInput = await within(formElement).findByLabelText("text");
-    const numberInput = await within(formElement).findByLabelText("number");
-    const submitButton = await within(formElement).findByText("submit");
-    const resetButton = await within(formElement).findByText("reset");
+    const textInput = await screen.findByLabelText("text");
+    const numberInput = await screen.findByLabelText("number");
+    const submitButton = await screen.findByText("submit");
+    const resetButton = await screen.findByText("reset");
 
-    expect(resetButton).toBeDisabled();
-    expect(submitButton).toBeDisabled();
+    await waitFor(() => {
+      expect(submitButton).toBeDisabled();
+      expect(resetButton).toBeDisabled();
+    });
 
     userEvent.type(textInput, "test");
 
     await waitFor(() => {
-      expect(resetButton).toBeEnabled();
       expect(submitButton).toBeDisabled();
+      expect(resetButton).toBeEnabled();
     });
 
     fireEvent.reset(formElement);
 
     await waitFor(() => {
-      expect(resetButton).toBeDisabled();
       expect(submitButton).toBeDisabled();
+      expect(resetButton).toBeDisabled();
     });
 
     userEvent.type(textInput, "test");
     userEvent.type(numberInput, "2");
 
     await waitFor(() => {
-      expect(resetButton).toBeEnabled();
       expect(submitButton).toBeEnabled();
+      expect(resetButton).toBeEnabled();
     });
 
     fireEvent.submit(formElement);

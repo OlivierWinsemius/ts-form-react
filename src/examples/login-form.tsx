@@ -13,7 +13,13 @@ const { useForm, useField, FormProvider, form } = createForm({
 });
 
 const LoginForm = () => (
-  <form onSubmit={form.submit} onReset={form.reset}>
+  <form
+    onReset={form.reset}
+    onSubmit={(e) => {
+      e.preventDefault();
+      form.submit();
+    }}
+  >
     <TextInput fieldName="name" useField={useField} />
     <TextInput fieldName="password" useField={useField} />
     <FormButtons useForm={useForm} />

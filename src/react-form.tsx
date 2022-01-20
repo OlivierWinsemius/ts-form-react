@@ -3,20 +3,37 @@ import { FormValues } from "ts-form/build/types";
 
 export class ReactForm<V extends FormValues> extends Form<V> {
   _fieldNames = this.fieldNames;
+  _getIsSubmitting = this.getIsSubmitting;
+  _getIsTouched = this.getIsTouched;
+  _getIsValid = this.getIsValid;
   _getField = this.getField;
 
-  _setAfterValidateField = (
-    afterValidateField: (field: keyof V, form: this) => void
-  ) => {
-    this.afterValidateField = afterValidateField;
+  _setAfterValidate = (afterValidate: (field: keyof V, form: this) => void) => {
+    this.afterValidate = afterValidate;
   };
 
   _setAfterSubmit = (afterSubmit: (form: this) => void) => {
     this.afterSubmit = afterSubmit;
   };
 
-  _setAfterValidateForm = (afterValidateForm: (form: this) => void) => {
-    this.afterValidateForm = afterValidateForm;
+  _setBeforeSubmit = (beforeSubmit: (form: this) => void) => {
+    this.beforeSubmit = beforeSubmit;
+  };
+
+  _setAfterReset = (afterReset: (form: this) => void) => {
+    this.afterReset = afterReset;
+  };
+
+  _setGetIsSubmitting = (getIsSubmitting: Form<V>["getIsSubmitting"]) => {
+    this.getIsSubmitting = getIsSubmitting;
+  };
+
+  _setGetIsTouched = (getIsTouched: Form<V>["getIsTouched"]) => {
+    this.getIsTouched = getIsTouched;
+  };
+
+  _setGetIsValid = (getIsValid: Form<V>["getIsValid"]) => {
+    this.getIsValid = getIsValid;
   };
 
   _setGetField = (getField: Form<V>["getField"]) => {
