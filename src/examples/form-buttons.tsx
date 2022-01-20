@@ -9,18 +9,14 @@ interface Props<V extends FormValues> {
 export const FormButtons = <V extends FormValues>({ useForm }: Props<V>) => {
   const { isSubmitting, isValid, isTouched } = useForm();
 
-  if (isSubmitting) {
-    return <span>submitting...</span>;
-  }
-
   return (
-    <>
-      <button type="submit" disabled={!isValid}>
-        submit
+    <div className="formButtons">
+      <button type="submit" disabled={!isValid || isSubmitting}>
+        {isSubmitting ? "submitting..." : "submit"}
       </button>
-      <button type="reset" disabled={!isTouched}>
+      <button type="reset" disabled={!isTouched || isSubmitting}>
         reset
       </button>
-    </>
+    </div>
   );
 };

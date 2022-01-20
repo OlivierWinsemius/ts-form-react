@@ -5,6 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Examples</title>
+    <style>
+      form {
+        margin: 0 auto;
+        padding: 20px;
+        width: 300px;
+      }
+
+      input,
+      textarea {
+        background-color: #f0f0f0;
+        padding: 5px;
+        border: none;
+        outline: none;
+        border-radius: 10px;
+        resize: none;
+      }
+
+      input[aria-invalid="true"],
+      textarea[aria-invalid="true"] {
+        background-color: #d8d8d8;
+      }
+
+      input:focus,
+      textarea:focus {
+        background-color: #f0f0f0;
+      }
+
+      fieldset,
+      .formButtons {
+        display: grid;
+        gap: 10px;
+        border-radius: 10px;
+      }
+
+      .formButtons {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      button {
+        border-radius: 999px;
+        border: none;
+        outline: none;
+        color: #ffffff;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+      }
+
+      button[type="submit"] {
+        background-color: #618061;
+      }
+
+      button[type="reset"] {
+        background-color: #3d3d3d;
+      }
+    </style>
   </head>
   <body>
     <div id="root" />

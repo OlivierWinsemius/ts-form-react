@@ -6,15 +6,30 @@ class ReactForm extends ts_form_1.Form {
     constructor() {
         super(...arguments);
         this._fieldNames = this.fieldNames;
+        this._getIsSubmitting = this.getIsSubmitting;
+        this._getIsTouched = this.getIsTouched;
+        this._getIsValid = this.getIsValid;
         this._getField = this.getField;
-        this._setAfterValidateField = (afterValidateField) => {
-            this.afterValidateField = afterValidateField;
+        this._setAfterValidate = (afterValidate) => {
+            this.afterValidate = afterValidate;
         };
         this._setAfterSubmit = (afterSubmit) => {
             this.afterSubmit = afterSubmit;
         };
-        this._setAfterValidateForm = (afterValidateForm) => {
-            this.afterValidateForm = afterValidateForm;
+        this._setBeforeSubmit = (beforeSubmit) => {
+            this.beforeSubmit = beforeSubmit;
+        };
+        this._setAfterReset = (afterReset) => {
+            this.afterReset = afterReset;
+        };
+        this._setGetIsSubmitting = (getIsSubmitting) => {
+            this.getIsSubmitting = getIsSubmitting;
+        };
+        this._setGetIsTouched = (getIsTouched) => {
+            this.getIsTouched = getIsTouched;
+        };
+        this._setGetIsValid = (getIsValid) => {
+            this.getIsValid = getIsValid;
         };
         this._setGetField = (getField) => {
             this.getField = getField;

@@ -5,10 +5,14 @@ import { TextInput } from "./form-input";
 
 const { useForm, useField, FormProvider, form } = createForm({
   values: { name: "", password: "" },
-  onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1000)),
   validators: {
     name: (v) => v.string().truthy(),
     password: (v) => v.string().truthy(),
+  },
+  onSubmit: async (values, form) => {
+    console.log("submitting values:", values);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    form.reset();
   },
 });
 
@@ -20,9 +24,14 @@ const LoginForm = () => (
       form.submit();
     }}
   >
-    <TextInput fieldName="name" useField={useField} />
-    <TextInput fieldName="password" useField={useField} />
-    <FormButtons useForm={useForm} />
+    <fieldset>
+      <legend>login form</legend>
+      <label htmlFor="name">name:</label>
+      <TextInput fieldName="name" useField={useField} />
+      <label htmlFor="name">password:</label>
+      <TextInput fieldName="password" useField={useField} />
+      <FormButtons useForm={useForm} />
+    </fieldset>
   </form>
 );
 

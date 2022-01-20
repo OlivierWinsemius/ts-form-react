@@ -3,11 +3,10 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import {
   render,
-  cleanup,
   screen,
-  within,
-  fireEvent,
   waitFor,
+  cleanup,
+  fireEvent,
 } from "@testing-library/react";
 
 import { TextInput, NumberInput } from "../examples/form-input";

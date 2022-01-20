@@ -24,40 +24,52 @@ const react_1 = __importStar(require("react"));
 const listeners = {};
 const getField = (id, form) => (field) => {
     const [update, setUpdate] = (0, react_1.useState)(id);
-    listeners[`getField_${field}_${id}`] = () => setUpdate(update + 1);
+    listeners[`${id}_${field}`] = () => setUpdate(update + 1);
     return (0, react_1.useMemo)(() => form._getField(field), [update]);
+};
+const getBoolean = (id, method) => () => {
+    const [update, setUpdate] = (0, react_1.useState)(id);
+    const value = (0, react_1.useMemo)(method, [update]);
+    listeners[id] = () => value !== method() && setUpdate(update + 1);
+    return value;
 };
 let id = 0;
 const ReactFormProvider = ({ form, Context, children, }) => {
     const [isReady, setIsReady] = (0, react_1.useState)(false);
-    const [isSubmitting, setIsSubmitting] = (0, react_1.useState)(!!form.isSubmitting);
-    const [isTouched, setIsTouched] = (0, react_1.useState)(!!form.isTouched);
-    const [isValid, setIsValid] = (0, react_1.useState)(!form.isValid);
     (0, react_1.useEffect)(() => {
-        let mounted = true;
-        const updateBooleans = (f) => {
-            if (mounted) {
-                setIsSubmitting(f.isSubmitting);
-                setIsTouched(f.isTouched);
-                setIsValid(f.isValid);
-            }
-        };
         const uniqueId = ++id;
-        form._setGetField(getField(uniqueId, form));
-        form._setAfterSubmit(updateBooleans);
-        form._setAfterValidateForm(updateBooleans);
-        form._setAfterValidateField((field, f) => {
-            listeners[`getField_${field}_${uniqueId}`]();
-            updateBooleans(f);
+        const submittingId = `isSubmitting_${uniqueId}`;
+        const touchedId = `isTouched_${uniqueId}`;
+        const fieldId = `getField_${uniqueId}`;
+        const validId = `isValid_${uniqueId}`;
+        form._setAfterSubmit(() => {
+            listeners[submittingId]();
         });
+        form._setBeforeSubmit(() => {
+            listeners[submittingId]();
+            listeners[validId]();
+        });
+        form._setAfterReset(() => {
+            listeners[touchedId]();
+            listeners[validId]();
+            for (const field of form._fieldNames) {
+                listeners[`${fieldId}_${field}`]();
+            }
+        });
+        form._setAfterValidate((field) => {
+            listeners[`${fieldId}_${field}`]();
+            listeners[touchedId]();
+            listeners[validId]();
+        });
+        form._setGetField(getField(fieldId, form));
+        form._setGetIsValid(getBoolean(validId, form._getIsValid));
+        form._setGetIsTouched(getBoolean(touchedId, form._getIsTouched));
+        form._setGetIsSubmitting(getBoolean(submittingId, form._getIsSubmitting));
         setIsReady(true);
-        return () => {
-            mounted = false;
-        };
     }, [form]);
     if (!isReady) {
         return null;
     }
-    return (react_1.default.createElement(Context.Provider, { value: Object.assign(Object.assign({}, form), { isSubmitting, isTouched, isValid }) }, children));
+    return react_1.default.createElement(Context.Provider, { value: form }, children);
 };
 exports.ReactFormProvider = ReactFormProvider;
