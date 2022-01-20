@@ -1,7 +1,7 @@
 import React from "react";
 import { createForm } from "../create-form";
 import { FormButtons } from "./form-buttons";
-import { TextInput } from "./form-input";
+import { PasswordInput, TextInput } from "./form-input";
 
 const { useForm, useField, FormProvider, form } = createForm({
   values: { name: "", password: "" },
@@ -30,7 +30,7 @@ const LoginForm = () => (
       <label htmlFor="name">name:</label>
       <TextInput fieldName="name" useField={useField} />
       <label htmlFor="password">password:</label>
-      <TextInput fieldName="password" useField={useField} />
+      <PasswordInput fieldName="password" useField={useField} />
       <FormButtons useForm={useForm} />
     </fieldset>
   </form>
