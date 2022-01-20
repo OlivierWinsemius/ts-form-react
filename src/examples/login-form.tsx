@@ -3,7 +3,7 @@ import { createForm } from "../create-form";
 import { FormButtons } from "./form-buttons";
 import { TextInput } from "./form-input";
 
-const { useForm, useField, FormProvider } = createForm({
+const { useForm, useField, FormProvider, form } = createForm({
   values: { name: "", password: "" },
   onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1000)),
   validators: {
@@ -13,7 +13,7 @@ const { useForm, useField, FormProvider } = createForm({
 });
 
 const LoginForm = () => (
-  <form>
+  <form onSubmit={form.submit} onReset={form.reset}>
     <TextInput fieldName="name" useField={useField} />
     <TextInput fieldName="password" useField={useField} />
     <FormButtons useForm={useForm} />

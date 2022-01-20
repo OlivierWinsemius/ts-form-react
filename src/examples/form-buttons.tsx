@@ -7,7 +7,7 @@ interface Props<V extends FormValues> {
 }
 
 export const FormButtons = <V extends FormValues>({ useForm }: Props<V>) => {
-  const { submit, reset, isSubmitting, isValid, isTouched } = useForm();
+  const { isSubmitting, isValid, isTouched } = useForm();
 
   if (isSubmitting) {
     return <span>submitting...</span>;
@@ -15,10 +15,10 @@ export const FormButtons = <V extends FormValues>({ useForm }: Props<V>) => {
 
   return (
     <>
-      <button onClick={submit} type="submit" disabled={!isValid}>
+      <button type="submit" disabled={!isValid}>
         submit
       </button>
-      <button onClick={reset} type="reset" disabled={!isTouched}>
+      <button type="reset" disabled={!isTouched}>
         reset
       </button>
     </>

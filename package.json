@@ -46,8 +46,8 @@
     "typecheck": "tsc",
     "build": "rm -r build && tsc --project tsconfig.build.json",
     "lint": "eslint src",
-    "format": "prettier --write .",
-    "test": "jest src --collectCoverage",
+    "format": "prettier --write src",
+    "test": "jest src",
     "start": "node start"
   }
 }

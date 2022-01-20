@@ -48,11 +48,11 @@ export const ReactFormProvider = <
   useEffect(() => {
     const uniqueId = ++id;
 
+    form._setGetField(getField(uniqueId, form));
+
     form._setAfterSubmit(updateBooleans);
 
     form._setAfterValidateForm(updateBooleans);
-
-    form._setGetField(getField(uniqueId, form));
 
     form._setAfterValidateField((field, f) => {
       listeners[`getField_${field}_${uniqueId}`]?.();

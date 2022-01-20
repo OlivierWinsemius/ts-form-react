@@ -40,9 +40,9 @@ const ReactFormProvider = ({ form, Context, children, }) => {
     }, []);
     (0, react_1.useEffect)(() => {
         const uniqueId = ++id;
+        form._setGetField(getField(uniqueId, form));
         form._setAfterSubmit(updateBooleans);
         form._setAfterValidateForm(updateBooleans);
-        form._setGetField(getField(uniqueId, form));
         form._setAfterValidateField((field, f) => {
             var _a;
             (_a = listeners[`getField_${field}_${uniqueId}`]) === null || _a === void 0 ? void 0 : _a.call(listeners);
