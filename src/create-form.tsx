@@ -19,7 +19,7 @@ export const createForm = <V extends FormValues>(
     React.useContext(FormContext).getField<F>(field);
 
   const FormProvider: React.FC = ({ children }) => (
-    <ReactFormProvider<V> Context={FormContext} form={reactForm}>
+    <ReactFormProvider Context={FormContext} form={reactForm}>
       {children}
     </ReactFormProvider>
   );

@@ -10,8 +10,7 @@ const { useForm, useField, FormProvider, form } = createForm({
     email: (v) => v.email(),
     message: (v) => v.string().truthy(),
   },
-  onSubmit: async (values, form) => {
-    console.log("submitting values:", values);
+  onSubmit: async (_, form) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     form.reset();
   },

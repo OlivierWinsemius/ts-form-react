@@ -9,6 +9,6 @@
     "prettier"
   ],
   "rules": {
-    "complexity": [2, 2]
+    "complexity": [2, 3]
   }
 }

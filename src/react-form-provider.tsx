@@ -1,7 +1,6 @@
-import React, { Context } from "react";
+import React, { Context, useEffect, useState } from "react";
 import { FormValues } from "ts-form/build/types";
 import { ReactForm } from "./react-form";
-import { useTransformFormMethods } from "./react-form-provider.hooks";
 
 interface Props<V extends FormValues> {
   form: ReactForm<V>;
@@ -9,16 +8,23 @@ interface Props<V extends FormValues> {
   children: React.ReactNode;
 }
 
+const useBlockRenderingOneTick = () => {
+  const [isBlocked, setIsBlocked] = useState(true);
+
+  useEffect(() => {
+    setIsBlocked(false);
+  }, []);
+
+  return isBlocked;
+};
+
 export const ReactFormProvider = <V extends FormValues>({
   form,
   Context,
   children,
 }: Props<V>) => {
-  const { isReady } = useTransformFormMethods(form);
-
-  if (!isReady) {
-    return null;
-  }
-
-  return <Context.Provider value={form}>{children}</Context.Provider>;
+  const isBlocked = useBlockRenderingOneTick();
+  return isBlocked ? null : (
+    <Context.Provider value={form}>{children}</Context.Provider>
+  );
 };

@@ -12,7 +12,6 @@ export const TextInput = <F extends string>({
 }: Props<F, string>) => {
   const { value, setValue, isValid, isTouched } = useField(fieldName);
   const isInvalid = isTouched && !isValid;
-
   return (
     <input
       id={fieldName}
@@ -24,14 +23,22 @@ export const TextInput = <F extends string>({
   );
 };
 
-export const PasswordInput = <F extends string>({
+const usePasswordState = <F extends string>({
   fieldName,
   useField,
 }: Props<F, string>) => {
   const [showPassword, setShowPassword] = useState(false);
   const { value, setValue, isValid, isTouched } = useField(fieldName);
   const isInvalid = isTouched && !isValid;
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
+  return { value, setValue, isInvalid, showPassword, toggleShowPassword };
+};
+
+export const PasswordInput = <F extends string>(props: Props<F, string>) => {
+  const { fieldName } = props;
+  const { value, setValue, showPassword, toggleShowPassword, isInvalid } =
+    usePasswordState(props);
   return (
     <div
       style={{
@@ -42,8 +49,8 @@ export const PasswordInput = <F extends string>({
       }}
     >
       <input
-        style={{ flex: 1 }}
         id={fieldName}
+        style={{ flex: 1 }}
         type={showPassword ? "text" : "password"}
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -52,7 +59,7 @@ export const PasswordInput = <F extends string>({
       <button
         type="button"
         style={{ backgroundColor: showPassword ? "#f0f0f0" : "#c0c0c0" }}
-        onClick={() => setShowPassword(!showPassword)}
+        onClick={toggleShowPassword}
       />
     </div>
   );
@@ -63,7 +70,6 @@ export const TextAreaInput = <F extends string>({
   useField,
 }: Props<F, string>) => {
   const { value, setValue, isValid, isTouched } = useField(fieldName);
-
   return (
     <textarea
       id={fieldName}
@@ -79,7 +85,6 @@ export const NumberInput = <F extends string>({
   useField,
 }: Props<F, number>) => {
   const { value, setValue, isValid, isTouched } = useField(fieldName);
-
   return (
     <input
       id={fieldName}

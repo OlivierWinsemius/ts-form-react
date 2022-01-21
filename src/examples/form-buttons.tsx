@@ -20,7 +20,6 @@ const ResetButton = ({ isDisabled }: { isDisabled: boolean }) => (
 
 export const FormButtons = <V extends FormValues>({ useForm }: Props<V>) => {
   const { isTouched, isValid } = useForm();
-
   return (
     <div className="formButtons">
       <SubmitButton isDisabled={!isValid} />
