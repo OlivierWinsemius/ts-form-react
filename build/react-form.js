@@ -45,6 +45,12 @@ class ReactForm extends ts_form_1.Form {
             this.updateIsValid();
         };
         const { fieldNames, getIsSubmitting, createGetValue, getIsValid, getIsTouched, getField, submitId, touchedId, validId, fieldId, } = this;
+        this.formEvents = {
+            afterReset: this.afterReset,
+            beforeSubmit: this.beforeSubmit,
+            afterSubmit: this.afterSubmit,
+            afterValidate: this.afterValidate,
+        };
         const fieldIds = fieldNames.map(fieldId);
         const listenerIds = [submitId, validId, touchedId, ...fieldIds];
         listenerIds.forEach((id) => (this.listeners[id] = []));
@@ -54,6 +60,7 @@ class ReactForm extends ts_form_1.Form {
         const createGetField = (fieldName) => createGetValue(fieldId(fieldName), () => getField(fieldName));
         const getFieldValues = Object.fromEntries(fieldNames.map((fieldName) => [fieldName, createGetField(fieldName)]));
         this.getField = (fieldName) => getFieldValues[fieldName]();
+        this.reset();
     }
 }
 exports.ReactForm = ReactForm;
