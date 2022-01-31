@@ -7,7 +7,12 @@ const { useForm, useField, FormProvider, form } = createForm({
   values: { name: "", email: "", message: "" },
   validators: {
     name: (v) => v.string().truthy(),
-    email: (v) => v.email(),
+    email: (v) =>
+      v.email().custom((value, formValues) => {
+        if (formValues.name && !value) {
+          return "email must be set if name is set";
+        }
+      }),
     message: (v) => v.string().truthy(),
   },
   onSubmit: async (_, form) => {

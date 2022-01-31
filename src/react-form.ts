@@ -69,6 +69,13 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       fieldId,
     } = this;
 
+    this.formEvents = {
+      afterReset: this.afterReset,
+      beforeSubmit: this.beforeSubmit,
+      afterSubmit: this.afterSubmit,
+      afterValidate: this.afterValidate,
+    };
+
     const fieldIds = fieldNames.map(fieldId);
     const listenerIds = [submitId, validId, touchedId, ...fieldIds];
     listenerIds.forEach((id) => (this.listeners[id] = []));
@@ -84,5 +91,7 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     ) as { [field in keyof V]: () => FormField<V[field]> };
 
     this.getField = (fieldName) => getFieldValues[fieldName]();
+
+    this.reset();
   }
 }
