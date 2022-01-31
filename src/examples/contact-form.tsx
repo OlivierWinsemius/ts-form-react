@@ -15,33 +15,34 @@ const { useForm, useField, FormProvider, form } = createForm({
       }),
     message: (v) => v.string().truthy(),
   },
-  onSubmit: async (_, form) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    form.reset();
-  },
+  onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1000)),
 });
 
-const ContactForm = () => (
-  <form
-    aria-disabled={useForm().isSubmitting}
-    onReset={form.reset}
-    onSubmit={(e) => {
-      e.preventDefault();
-      form.submit();
-    }}
-  >
-    <fieldset>
-      <legend>contact form</legend>
-      <label htmlFor="name">name:</label>
-      <TextInput fieldName="name" useField={useField} />
-      <label htmlFor="email">email:</label>
-      <TextInput fieldName="email" useField={useField} />
-      <label htmlFor="message">message:</label>
-      <TextAreaInput fieldName="message" useField={useField} />
-      <FormButtons useForm={useForm} />
-    </fieldset>
-  </form>
-);
+const ContactForm = () => {
+  const { isSubmitted, isSubmitting } = useForm();
+
+  return (
+    <form
+      aria-disabled={isSubmitted || isSubmitting}
+      onReset={form.reset}
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.submit();
+      }}
+    >
+      <fieldset>
+        <legend>contact form</legend>
+        <label htmlFor="name">name:</label>
+        <TextInput fieldName="name" useField={useField} />
+        <label htmlFor="email">email:</label>
+        <TextInput fieldName="email" useField={useField} />
+        <label htmlFor="message">message:</label>
+        <TextAreaInput fieldName="message" useField={useField} />
+        <FormButtons useForm={useForm} />
+      </fieldset>
+    </form>
+  );
+};
 
 export const ContactFormExample = () => (
   <FormProvider>

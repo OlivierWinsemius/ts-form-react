@@ -91,7 +91,5 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     ) as { [field in keyof V]: () => FormField<V[field]> };
 
     this.getField = (fieldName) => getFieldValues[fieldName]();
-
-    this.reset();
   }
 }
