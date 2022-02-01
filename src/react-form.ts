@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { Form } from "ts-form";
 import { FormField, FormProperties, FormValues } from "ts-form/build/types";
 
+enum ListenerIds {
+  IsValid = "isValid",
+  IsTouched = "isTouched",
+  IsSubmitting = "isSubmitting",
+  IsSubmitted = "isSubmitted",
+}
+
 export class ReactForm<V extends FormValues> extends Form<V> {
   listeners: Record<string, (() => void)[]> = {};
-  validId = `isValid`;
-  touchedId = `isTouched`;
-  submittingId = `isSubmitting`;
-  submittedId = `isSubmitted`;
 
-  fieldId = (fieldName: keyof V) => `getField_${fieldName}`;
+  getFieldId = (fieldName: keyof V) => `getField_${fieldName}`;
 
   createGetValue =
     <V>(id: string, getValue: () => V) =>
@@ -28,13 +31,19 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     };
 
   updateIsSubmitting = () =>
-    this.listeners[this.submittingId].forEach((f) => f());
+    this.listeners[ListenerIds.IsSubmitting].forEach((f) => f());
+
   updateIsSubmitted = () =>
-    this.listeners[this.submittedId].forEach((f) => f());
-  updateIsTouched = () => this.listeners[this.touchedId].forEach((f) => f());
-  updateIsValid = () => this.listeners[this.validId].forEach((f) => f());
+    this.listeners[ListenerIds.IsSubmitted].forEach((f) => f());
+
+  updateIsTouched = () =>
+    this.listeners[ListenerIds.IsTouched].forEach((f) => f());
+
+  updateIsValid = () => this.listeners[ListenerIds.IsValid].forEach((f) => f());
+
   updateField = (fieldName: keyof V) =>
-    this.listeners[this.fieldId(fieldName)].forEach((f) => f());
+    this.listeners[this.getFieldId(fieldName)].forEach((f) => f());
+
   updateAllFields = () => this.fieldNames.forEach(this.updateField);
 
   afterSubmit = () => {
@@ -72,11 +81,7 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       getIsValid,
       getIsTouched,
       getField,
-      submittingId,
-      submittedId,
-      touchedId,
-      validId,
-      fieldId,
+      getFieldId,
     } = this;
 
     this.formEvents = {
@@ -86,16 +91,22 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       afterValidate: this.afterValidate,
     };
 
-    const fieldIds = fieldNames.map(fieldId);
-    const listenerIds = [submittingId, validId, touchedId, ...fieldIds];
+    const fieldIds = fieldNames.map(getFieldId);
+    const listenerIds = [...Object.values(ListenerIds), ...fieldIds];
     listenerIds.forEach((id) => (this.listeners[id] = []));
 
-    this.getIsSubmitting = createGetValue(submittingId, getIsSubmitting);
-    this.getIsSubmitted = createGetValue(submittedId, getIsSubmitted);
-    this.getIsTouched = createGetValue(touchedId, getIsTouched);
-    this.getIsValid = createGetValue(validId, getIsValid);
+    this.getIsSubmitting = createGetValue(
+      ListenerIds.IsSubmitting,
+      getIsSubmitting
+    );
+    this.getIsSubmitted = createGetValue(
+      ListenerIds.IsSubmitted,
+      getIsSubmitted
+    );
+    this.getIsTouched = createGetValue(ListenerIds.IsTouched, getIsTouched);
+    this.getIsValid = createGetValue(ListenerIds.IsValid, getIsValid);
     const createGetField = <F extends keyof V>(fieldName: F) =>
-      createGetValue(fieldId(fieldName), () => getField(fieldName));
+      createGetValue(getFieldId(fieldName), () => getField(fieldName));
 
     const getFieldValues = Object.fromEntries(
       fieldNames.map((fieldName) => [fieldName, createGetField(fieldName)])

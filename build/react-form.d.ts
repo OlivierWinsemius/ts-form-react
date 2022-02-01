@@ -2,11 +2,7 @@ import { Form } from "ts-form";
 import { FormProperties, FormValues } from "ts-form/build/types";
 export declare class ReactForm<V extends FormValues> extends Form<V> {
     listeners: Record<string, (() => void)[]>;
-    validId: string;
-    touchedId: string;
-    submittingId: string;
-    submittedId: string;
-    fieldId: (fieldName: keyof V) => string;
+    getFieldId: (fieldName: keyof V) => string;
     createGetValue: <V_1>(id: string, getValue: () => V_1) => () => V_1;
     updateIsSubmitting: () => void;
     updateIsSubmitted: () => void;
