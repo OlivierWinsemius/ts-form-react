@@ -6,7 +6,9 @@ export class ReactForm<V extends FormValues> extends Form<V> {
   listeners: Record<string, (() => void)[]> = {};
   validId = `isValid`;
   touchedId = `isTouched`;
-  submitId = `isSubmitting`;
+  submittingId = `isSubmitting`;
+  submittedId = `isSubmitted`;
+
   fieldId = (fieldName: keyof V) => `getField_${fieldName}`;
 
   createGetValue =
@@ -25,7 +27,10 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       return value;
     };
 
-  updateIsSubmitting = () => this.listeners[this.submitId].forEach((f) => f());
+  updateIsSubmitting = () =>
+    this.listeners[this.submittingId].forEach((f) => f());
+  updateIsSubmitted = () =>
+    this.listeners[this.submittedId].forEach((f) => f());
   updateIsTouched = () => this.listeners[this.touchedId].forEach((f) => f());
   updateIsValid = () => this.listeners[this.validId].forEach((f) => f());
   updateField = (fieldName: keyof V) =>
@@ -34,17 +39,20 @@ export class ReactForm<V extends FormValues> extends Form<V> {
 
   afterSubmit = () => {
     this.updateIsSubmitting();
+    this.updateIsSubmitted();
   };
 
   beforeSubmit = () => {
-    this.updateIsSubmitting();
     this.updateIsValid();
+    this.updateIsSubmitting();
+    this.updateIsSubmitted();
   };
 
   afterReset = () => {
     this.updateAllFields();
     this.updateIsTouched();
     this.updateIsValid();
+    this.updateIsSubmitted();
   };
 
   afterValidate = <F extends keyof V>(field: F) => {
@@ -59,11 +67,13 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     const {
       fieldNames,
       getIsSubmitting,
+      getIsSubmitted,
       createGetValue,
       getIsValid,
       getIsTouched,
       getField,
-      submitId,
+      submittingId,
+      submittedId,
       touchedId,
       validId,
       fieldId,
@@ -77,10 +87,11 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     };
 
     const fieldIds = fieldNames.map(fieldId);
-    const listenerIds = [submitId, validId, touchedId, ...fieldIds];
+    const listenerIds = [submittingId, validId, touchedId, ...fieldIds];
     listenerIds.forEach((id) => (this.listeners[id] = []));
 
-    this.getIsSubmitting = createGetValue(submitId, getIsSubmitting);
+    this.getIsSubmitting = createGetValue(submittingId, getIsSubmitting);
+    this.getIsSubmitted = createGetValue(submittedId, getIsSubmitted);
     this.getIsTouched = createGetValue(touchedId, getIsTouched);
     this.getIsValid = createGetValue(validId, getIsValid);
     const createGetField = <F extends keyof V>(fieldName: F) =>
