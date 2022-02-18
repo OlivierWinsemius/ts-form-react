@@ -16,7 +16,7 @@ export const createForm = <V extends FormValues>(
   const useForm = () => React.useContext(FormContext) as unknown as Form<V>;
 
   const useField = <F extends keyof V>(field: F) =>
-    React.useContext(FormContext).getField<F>(field);
+    React.useContext(FormContext).useField<F>(field);
 
   const FormProvider: React.FC = ({ children }) => (
     <ReactFormProvider Context={FormContext} form={reactForm}>

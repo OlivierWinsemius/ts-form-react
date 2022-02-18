@@ -20,10 +20,11 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       const [value, setValue] = useState(getValue());
 
       useEffect(() => {
-        let isMounted = true;
-        this.listeners[id].push(() => isMounted && setValue(getValue()));
+        const listenerId =
+          this.listeners[id].push(() => setValue(getValue())) - 1;
+
         return () => {
-          isMounted = false;
+          this.listeners[id].splice(listenerId, 1);
         };
       }, []);
 
@@ -70,6 +71,8 @@ export class ReactForm<V extends FormValues> extends Form<V> {
     this.updateIsValid();
   };
 
+  useField: this["getField"];
+
   constructor(props: FormProperties<V>) {
     super(props);
 
@@ -99,12 +102,16 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       ListenerIds.IsSubmitting,
       getIsSubmitting
     );
+
     this.getIsSubmitted = createGetValue(
       ListenerIds.IsSubmitted,
       getIsSubmitted
     );
+
     this.getIsTouched = createGetValue(ListenerIds.IsTouched, getIsTouched);
+
     this.getIsValid = createGetValue(ListenerIds.IsValid, getIsValid);
+
     const createGetField = <F extends keyof V>(fieldName: F) =>
       createGetValue(getFieldId(fieldName), () => getField(fieldName));
 
@@ -112,6 +119,6 @@ export class ReactForm<V extends FormValues> extends Form<V> {
       fieldNames.map((fieldName) => [fieldName, createGetField(fieldName)])
     ) as { [field in keyof V]: () => FormField<V[field]> };
 
-    this.getField = (fieldName) => getFieldValues[fieldName]();
+    this.useField = (fieldName) => getFieldValues[fieldName]();
   }
 }

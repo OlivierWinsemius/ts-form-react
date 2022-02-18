@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createForm } from "../create-form";
 import { FormButtons } from "./form-buttons";
 import { TextAreaInput, TextInput } from "./form-input";
@@ -19,7 +19,12 @@ const { useForm, useField, FormProvider, form } = createForm({
 });
 
 const ContactForm = () => {
+  const [hide, setHide] = useState(false);
   const { isSubmitted, isSubmitting } = useForm();
+
+  if (hide) {
+    return null;
+  }
 
   return (
     <form
@@ -30,6 +35,14 @@ const ContactForm = () => {
         form.submit();
       }}
     >
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setHide(true);
+        }}
+      >
+        hide
+      </button>
       <fieldset>
         <legend>contact form</legend>
         <label htmlFor="name">name:</label>
