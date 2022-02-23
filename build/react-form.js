@@ -18,10 +18,9 @@ class ReactForm extends ts_form_1.Form {
         this.createGetValue = (id, getValue) => () => {
             const [value, setValue] = (0, react_1.useState)(getValue());
             (0, react_1.useEffect)(() => {
-                let isMounted = true;
-                this.listeners[id].push(() => isMounted && setValue(getValue()));
+                const listenerId = this.listeners[id].push(() => setValue(getValue())) - 1;
                 return () => {
-                    isMounted = false;
+                    this.listeners[id].splice(listenerId, 1);
                 };
             }, []);
             return value;
@@ -68,7 +67,7 @@ class ReactForm extends ts_form_1.Form {
         this.getIsValid = createGetValue(ListenerIds.IsValid, getIsValid);
         const createGetField = (fieldName) => createGetValue(getFieldId(fieldName), () => getField(fieldName));
         const getFieldValues = Object.fromEntries(fieldNames.map((fieldName) => [fieldName, createGetField(fieldName)]));
-        this.getField = (fieldName) => getFieldValues[fieldName]();
+        this.useField = (fieldName) => getFieldValues[fieldName]();
     }
 }
 exports.ReactForm = ReactForm;

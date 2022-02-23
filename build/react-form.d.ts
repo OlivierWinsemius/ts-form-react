@@ -14,5 +14,6 @@ export declare class ReactForm<V extends FormValues> extends Form<V> {
     beforeSubmit: () => void;
     afterReset: () => void;
     afterValidate: <F extends keyof V>(field: F) => void;
+    useField: this["getField"];
     constructor(props: FormProperties<V>);
 }

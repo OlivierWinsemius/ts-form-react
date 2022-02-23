@@ -12,7 +12,7 @@ const createForm = (formProperties) => {
     const form = reactForm;
     const FormContext = react_1.default.createContext(reactForm);
     const useForm = () => react_1.default.useContext(FormContext);
-    const useField = (field) => react_1.default.useContext(FormContext).getField(field);
+    const useField = (field) => react_1.default.useContext(FormContext).useField(field);
     const FormProvider = ({ children }) => (react_1.default.createElement(react_form_provider_1.ReactFormProvider, { Context: FormContext, form: reactForm }, children));
     return { form, useForm, useField, FormProvider };
 };
