@@ -71,9 +71,8 @@ describe("createForm", () => {
       expect(resetButton).toBeEnabled();
     });
 
-    fireEvent.reset(formElement);
-
     await waitFor(() => {
+      fireEvent.reset(formElement);
       expect(submitButton).toBeDisabled();
       expect(resetButton).toBeDisabled();
     });

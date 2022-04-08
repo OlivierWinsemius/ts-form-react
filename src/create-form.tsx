@@ -18,11 +18,16 @@ export const createForm = <V extends FormValues>(
   const useField = <F extends keyof V>(field: F) =>
     React.useContext(FormContext).useField<F>(field);
 
-  const FormProvider: React.FC = ({ children }) => (
+  const FormProvider = ({ children }: { children: React.ReactNode }) => (
     <ReactFormProvider Context={FormContext} form={reactForm}>
       {children}
     </ReactFormProvider>
   );
 
-  return { form, useForm, useField, FormProvider };
+  return {
+    form,
+    useForm,
+    useField,
+    FormProvider,
+  };
 };
