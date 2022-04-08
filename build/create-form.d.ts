@@ -5,5 +5,7 @@ export declare const createForm: <V extends FormValues>(formProperties: FormProp
     form: Form<V>;
     useForm: () => Form<V>;
     useField: <F extends keyof V>(field: F) => import("ts-form/build/types").FormField<V[F]>;
-    FormProvider: React.FC<{}>;
+    FormProvider: ({ children }: {
+        children: React.ReactNode;
+    }) => JSX.Element;
 };
